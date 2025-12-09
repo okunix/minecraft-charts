@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "minecraft.fullname" . }}
+  labels:
+    {{- include "minecraft.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "minecraft.fullname" . }} 
+  template:
+    metadata:
+      name: {{ include "minecraft.fullname" . }}
+      labels:
+        app: {{ include "minecraft.fullname" . }}
+        {{- include "minecraft.labels" . | nindent 8 }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      serviceAccountName: {{ include "minecraft.serviceAccountName" . }}
+      containers:
+        - image: "itzg/minecraft-server:{{- .Values.imageTag -}}"
+          name: minecraft-server
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          envFrom:
+            - configMapRef:
+                name: {{ include "minecraft.configMapName" . }}
+          volumeMounts:
+            - name: minecraft-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: {{ .Values.resources.requests.memory }} 
+              cpu: {{ .Values.resources.requests.cpu }} 
+            limits:
+              memory: {{ .Values.resources.limits.memory }} 
+              cpu: {{ .Values.resources.limits.cpu }}
+      volumes:
+        - name: minecraft-data 
+          persistentVolumeClaim:
+            claimName: {{ include "minecraft.persistentVolumeClaimName" . }}

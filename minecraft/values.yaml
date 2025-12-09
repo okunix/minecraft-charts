@@ -1,0 +1,27 @@
+serviceAccount:
+  create: true
+  automount: false
+
+imageTag: latest
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 500m
+  limits:
+    memory: 4Gi
+    cpu: 1
+
+minecraft:
+  port: 25565
+  initMemory: 1G
+  maxMemory: 4G
+  tz: UTC+3
+  type: VANILLA
+  EULA: true
+  version: LATEST
+  difficulty: easy
+  icon: https://avatars.githubusercontent.com/u/45029926
+  mode: survival
+  motd: a kubernetes minecraft server
+  pvp: true

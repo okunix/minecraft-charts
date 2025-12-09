@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "minecraft.configMapName" . }} 
+  labels:
+    {{- include "minecraft.labels" . | nindent 4 }}
+data:
+  {{- with .Values.minecraft.EULA }}
+  EULA: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.minecraft.maxMemory }}
+  MAX_MEMORY: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.initMemory }}
+  INIT_MEMORY: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.tz }}
+  TZ: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.jvmOpts }}
+  JVM_OPTS: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.type }}
+  TYPE: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.version }}
+  VERSION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.minecraft.difficulty }}
+  DIFFICULTY: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.icon }}
+  ICON: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.maxPlayers }}
+  MAX_PLAYERS: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.mode }}
+  MODE: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.motd }}
+  MOTD: {{ . }}
+  {{- end }}
+  {{- with .Values.minecraft.pvp }}
+  PVP: {{ . | quote }}
+  {{- end }}
