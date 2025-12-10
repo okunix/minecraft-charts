@@ -52,7 +52,7 @@ resources:
     cpu: 500m
   limits:
     memory: 4Gi
-    cpu: 1
+    cpu: 2
 
 # minecraft pods configuration
 minecraft:
