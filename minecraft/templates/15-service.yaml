@@ -7,9 +7,9 @@ metadata:
 spec:
   selector:
     app: {{ include "minecraft.fullname" . }}
-  type: LoadBalancer 
+  type: {{ .Values.service.type }} 
   ports:
-    - port: {{ .Values.minecraft.port }} 
+    - port: {{ .Values.service.port }} 
       targetPort: minecraft
       name: minecraft
       protocol: TCP

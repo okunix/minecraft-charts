@@ -20,7 +20,7 @@ spec:
     spec:
       serviceAccountName: {{ include "minecraft.serviceAccountName" . }}
       containers:
-        - image: "itzg/minecraft-server:{{- .Values.imageTag -}}"
+        - image: "itzg/minecraft-server:{{- .Values.minecraft.tag -}}"
           name: minecraft-server
           imagePullPolicy: Always
           ports:

@@ -2,7 +2,13 @@ serviceAccount:
   create: true
   automount: false
 
-imageTag: latest
+service:
+  type: LoadBalancer
+  port: 25565
+
+persistentVolumeClaim:
+  requests:
+    storage: 10Gi
 
 resources:
   requests:
@@ -13,7 +19,7 @@ resources:
     cpu: 1
 
 minecraft:
-  port: 25565
+  tag: latest
   initMemory: 1G
   maxMemory: 4G
   tz: UTC+3
