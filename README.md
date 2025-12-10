@@ -80,4 +80,6 @@ minecraft:
   motd: a kubernetes minecraft server
   # enable pvp
   pvp: true
+  # maximum amount of players on a server
+  maxPlayers: 20
 ```

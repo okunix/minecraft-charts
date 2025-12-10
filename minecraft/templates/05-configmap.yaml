@@ -44,3 +44,6 @@ data:
   {{- with .Values.minecraft.pvp }}
   PVP: {{ . | quote }}
   {{- end }}
+  {{- with .Values.minecraft.maxPlayers }}
+  MAX_PLAYERS: {{ . | quote }}
+  {{- end }}
