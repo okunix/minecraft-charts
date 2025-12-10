@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "minecraft.labels" . | nindent 4 }}
 data:
-  {{- with .Values.minecraft.EULA }}
+  {{- with .Values.minecraft.eula }}
   EULA: {{ . | quote }}
   {{- end }}
   {{- with .Values.minecraft.maxMemory }}

@@ -18,7 +18,7 @@ minecraft:
   maxMemory: 4G
   tz: UTC+3
   type: VANILLA
-  EULA: true
+  eula: true
   version: LATEST
   difficulty: easy
   icon: https://avatars.githubusercontent.com/u/45029926
