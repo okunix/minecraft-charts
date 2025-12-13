@@ -47,3 +47,6 @@ data:
   {{- with .Values.minecraft.maxPlayers }}
   MAX_PLAYERS: {{ . | quote }}
   {{- end }}
+  {{- with .Values.minecraft.online }}
+  ONLINE: {{ . | quote }}
+  {{- end }}
