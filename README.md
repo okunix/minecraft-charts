@@ -82,4 +82,6 @@ minecraft:
   pvp: true
   # maximum amount of players on a server
   maxPlayers: 20
+  # online mode
+  online: true
 ```
