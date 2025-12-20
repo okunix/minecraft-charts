@@ -8,6 +8,7 @@ spec:
   selector:
     app: {{ include "minecraft.fullname" . }}
   type: {{ .Values.service.type }} 
+  sessionAffinity: None
   ports:
     - port: {{ .Values.service.port }} 
       targetPort: minecraft
