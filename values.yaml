@@ -1,0 +1,47 @@
+replicaCount: 1
+
+image:
+  repository: itzg/minecraft-server
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  name: ""
+
+volumeStorage: 10G
+volumeStorageClass: local-path
+
+minecraft:
+  EULA: "FALSE"
+  ENABLE_RCON: "TRUE"
+
+minecraftSecrets: {}
+# RCON_PASSWORD: 1234
+
+podAnnotations: {}
+podLabels: {}
+podExtraPorts: []
+
+updateStrategy:
+  type: RollingUpdate
+
+service:
+  type: LoadBalancer
+  minecraftPort: 25565
+  rconPort: 25575
+  extraPorts: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

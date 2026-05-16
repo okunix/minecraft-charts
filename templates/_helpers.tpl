@@ -1,14 +1,23 @@
-{{- define "minecraft.persistentVolumeClaimName" -}}
-{{- default (include "minecraft.fullname" .) .Values.persistentVolumeClaimNameOverride -}}
-{{- end -}}
+{{/*
+Minecraft rcon password
+*/}}
+{{- define "minecraft.rconPassword" -}}
+{{- .Values.minecraftSecrets.RCON_PASSWORD | default (randAlphaNum 20) }}
+{{- end }}
 
-{{- define "minecraft.serviceName" -}}
-{{- default (include "minecraft.fullname" .) .Values.serviceNameOverride -}}
-{{- end -}}
+{{/*
+Minecraft rcon port
+*/}}
+{{- define "minecraft.rconPort" -}}
+{{- .Values.minecraft.RCON_PORT | default 25575 }}
+{{- end }}
 
-{{- define "minecraft.configMapName" -}}
-{{- default (include "minecraft.fullname" .) .Values.configMapNameOverride -}}
-{{- end -}}
+{{/*
+Minecraft server port
+*/}}
+{{- define "minecraft.serverPort" -}}
+{{- .Values.minecraft.SERVER_PORT | default 25565 }}
+{{- end }}
 
 {{/*
 Expand the name of the chart.

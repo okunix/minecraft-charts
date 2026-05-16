@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "minecraft.fullname" . }}
+  labels:
+    {{- include "minecraft.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "minecraft.fullname" . -}}-headless
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "minecraft.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "minecraft.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }} 
+        {{- end }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "minecraft.serviceAccountName" . }}
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.resources }}
+      resources:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: minecraft-server 
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (.Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ include "minecraft.serverPort" . }}
+              name: minecraft
+              protocol: TCP
+            {{- if .Values.minecraft.ENABLE_RCON }}
+            - containerPort: {{ include "minecraft.rconPort" . }}
+              name: rcon 
+              protocol: TCP
+            {{- end }}
+            {{- with .Values.podExtraPorts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - mountPath: /data 
+              subPath: data
+              name: {{ include "minecraft.fullname" . }}
+          envFrom:
+            - configMapRef: 
+                name: {{ include "minecraft.fullname" . }}
+                optional: true
+          env:
+            - name: RCON_PASSWORD
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "minecraft.fullname" . }}
+                  key: rcon-password
+                  optional: true
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "minecraft.fullname" . }}
+        labels: 
+          {{- include "minecraft.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.volumeStorageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.volumeStorage }}
