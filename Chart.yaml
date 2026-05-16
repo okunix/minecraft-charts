@@ -4,3 +4,8 @@ version: 0.1.0
 description: Minecraft Deployment
 type: application
 appVersion: "latest"
+dependencies:
+  - name: minecraft-server
+    version: "latest"
+    repository: "file://./charts/minecraft-server"
+    condition: minecraft-server.enabled

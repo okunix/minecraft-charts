@@ -1,47 +1,49 @@
-replicaCount: 1
+minecraft-server:
+  enabled: true
+  replicaCount: 1
 
-image:
-  repository: itzg/minecraft-server
-  pullPolicy: IfNotPresent
-  tag: ""
+  image:
+    repository: itzg/minecraft-server
+    pullPolicy: IfNotPresent
+    tag: ""
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
 
-serviceAccount:
-  create: true
-  automount: false
-  annotations: {}
-  name: ""
+  serviceAccount:
+    create: true
+    automount: false
+    annotations: {}
+    name: ""
 
-volumeStorage: 10G
-volumeStorageClass: local-path
+  volumeStorage: 10G
+  volumeStorageClass: local-path
 
-minecraft:
-  EULA: "FALSE"
-  ENABLE_RCON: "TRUE"
+  minecraft:
+    EULA: "FALSE"
+    ENABLE_RCON: "TRUE"
 
-minecraftSecrets: {}
-# RCON_PASSWORD: 1234
+  minecraftSecrets: {}
+  # RCON_PASSWORD: 1234
 
-podAnnotations: {}
-podLabels: {}
-podExtraPorts: []
+  podAnnotations: {}
+  podLabels: {}
+  podExtraPorts: []
 
-updateStrategy:
-  type: RollingUpdate
+  updateStrategy:
+    type: RollingUpdate
 
-service:
-  type: LoadBalancer
-  minecraftPort: 25565
-  rconPort: 25575
-  extraPorts: []
+  service:
+    type: LoadBalancer
+    minecraftPort: 25565
+    rconPort: 25575
+    extraPorts: []
 
-resources: {}
+  resources: {}
 
-nodeSelector: {}
+  nodeSelector: {}
 
-tolerations: []
+  tolerations: []
 
-affinity: {}
+  affinity: {}

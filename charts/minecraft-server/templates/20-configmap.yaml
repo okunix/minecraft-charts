@@ -1,0 +1,22 @@
+{{- if .Values.minecraft }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "minecraft-server.fullname" . }}
+  labels:
+    {{- include "minecraft-server.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.minecraft }}
+  {{ $key -}}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ include "minecraft-server.fullname" . }}
+  labels:
+    {{- include "minecraft-server.labels" . | nindent 4 }}
+data:
+  rcon-password: {{ include "minecraft-server.rconPassword" . | b64enc }}

@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "minecraft.fullname" . }}
+  name: {{ include "minecraft-server.fullname" . }}
   labels:
-    {{- include "minecraft.labels" . | nindent 4 }}
+    {{- include "minecraft-server.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  serviceName: {{ include "minecraft.fullname" . -}}-headless
+  serviceName: {{ include "minecraft-server.fullname" . -}}-headless
   {{- with .Values.updateStrategy }}
   updateStrategy:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "minecraft.selectorLabels" . | nindent 6 }}
+      {{- include "minecraft-server.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "minecraft.selectorLabels" . | nindent 8 }}
+        {{- include "minecraft-server.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }} 
         {{- end }}
@@ -27,7 +27,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "minecraft.serviceAccountName" . }}
+      serviceAccountName: {{ include "minecraft-server.serviceAccountName" . }}
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
@@ -56,11 +56,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (.Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ include "minecraft.serverPort" . }}
+            - containerPort: {{ include "minecraft-server.serverPort" . }}
               name: minecraft
               protocol: TCP
             {{- if .Values.minecraft.ENABLE_RCON }}
-            - containerPort: {{ include "minecraft.rconPort" . }}
+            - containerPort: {{ include "minecraft-server.rconPort" . }}
               name: rcon 
               protocol: TCP
             {{- end }}
@@ -70,23 +70,23 @@ spec:
           volumeMounts:
             - mountPath: /data 
               subPath: data
-              name: {{ include "minecraft.fullname" . }}
+              name: {{ include "minecraft-server.fullname" . }}
           envFrom:
             - configMapRef: 
-                name: {{ include "minecraft.fullname" . }}
+                name: {{ include "minecraft-server.fullname" . }}
                 optional: true
           env:
             - name: RCON_PASSWORD
               valueFrom:
                 secretKeyRef: 
-                  name: {{ include "minecraft.fullname" . }}
+                  name: {{ include "minecraft-server.fullname" . }}
                   key: rcon-password
                   optional: true
   volumeClaimTemplates:
     - metadata:
-        name: {{ include "minecraft.fullname" . }}
+        name: {{ include "minecraft-server.fullname" . }}
         labels: 
-          {{- include "minecraft.labels" . | nindent 10 }}
+          {{- include "minecraft-server.labels" . | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce
